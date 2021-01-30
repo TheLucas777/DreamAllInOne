@@ -1,7 +1,10 @@
 package at.lucas.dream.main;
 
 import at.lucas.dream.commands.SettingsCommand;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -13,11 +16,15 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        PluginManager pm = Bukkit.getPluginManager();
         onConfig();
         System.out.println("[DreamAllInOne] Plugin started");
 
         //Commands
         getCommand("settings").setExecutor(new SettingsCommand());
+
+        //Listeners
+        pm.registerEvents(new SettingsCommand(), this);
     }
 
     @Override

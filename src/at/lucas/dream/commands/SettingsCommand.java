@@ -7,7 +7,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -88,5 +90,28 @@ public class SettingsCommand implements CommandExecutor, Listener {
             }
         }
     }
-    public void
+    @EventHandler
+    public void onInventoryClickEvent(InventoryClickEvent e){
+        Player p = (Player) e.getWhoClicked();
+        ItemStack current = e.getCurrentItem();
+        if(current.getType() == Material.CLOCK && current.getItemMeta().getDisplayName().equals("§9§lTimer §f§l[§2§lActivated§f§l]")){
+            config.set("Timer",false);
+            try {
+                config.save(file);
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+            openSettings();
+            p.openInventory(inv);
+        }else if(current.getType() == Material.CLOCK && current.getItemMeta().getDisplayName().equals("§9§lTimer §f§l[§c§lDEACTIVATED§f§l]")){
+            config.set("Timer",true);
+            try {
+                config.save(file);
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+            openSettings();
+            p.openInventory(inv);
+        }
+    }
 }
