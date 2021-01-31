@@ -3,4 +3,7 @@
 It is a Plugin that combines most of the Plugins from Dream
 ## Features
 - Custom GUI
-- Timer
+
+## Challenges
+- DeathSwap
+  - Swaps **2 Players** every 5 minutes
