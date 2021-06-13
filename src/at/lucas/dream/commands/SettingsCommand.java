@@ -1,5 +1,6 @@
 package at.lucas.dream.commands;
 
+import at.lucas.dream.utils.getTexts;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -33,9 +34,8 @@ public class SettingsCommand implements CommandExecutor, Listener {
             Player p = (Player) sender;
             if(p.hasPermission("dream.*")||p.hasPermission("dream.settings")||p.hasPermission("dream")||p.isOp()){
                 openSettings();
-
                 p.openInventory(settings);
-            }
+            }else p.sendMessage(getTexts.getPrefix()+"No Permission");
         }
 
 
@@ -85,7 +85,7 @@ public class SettingsCommand implements CommandExecutor, Listener {
 
 
         settings.setItem(16,challenges);
-        //settings.setItem(10,timer);
+        settings.setItem(10,timer);
     }
     public void openTimer(){
 
@@ -181,31 +181,32 @@ public class SettingsCommand implements CommandExecutor, Listener {
     public void onInventoryClickEvent(InventoryClickEvent e){
         Player p = (Player) e.getWhoClicked();
         ItemStack current = e.getCurrentItem();
-      // if(current.getType() == Material.CLOCK && current.getItemMeta().getDisplayName().equals("§9§lTimer §f§l[§2§lActivated§f§l]")){
-      //     config.set("Timer",false);
-      //     try {
-      //         config.save(file);
-      //     } catch (IOException exception) {
-      //         exception.printStackTrace();
-      //     }
-      //     openSettings();
-      //     p.openInventory(settings);
-      // }else if(current.getType() == Material.CLOCK && current.getItemMeta().getDisplayName().equals("§9§lTimer §f§l[§c§lDEACTIVATED§f§l]")){
-      //     config.set("Timer",true);
-      //     try {
-      //         config.save(file);
-      //     } catch (IOException exception) {
-      //         exception.printStackTrace();
-      //     }
-      //     openSettings();
-      //     p.openInventory(settings);
-      // }
+       if(current.getType() == Material.CLOCK && current.getItemMeta().getDisplayName().equals("§9§lTimer §f§l[§2§lActivated§f§l]")){
+           config.set("Timer",false);
+           try {
+               config.save(file);
+           } catch (IOException exception) {
+               exception.printStackTrace();
+           }
+           openSettings();
+           p.openInventory(settings);
+       }else if(current.getType() == Material.CLOCK && current.getItemMeta().getDisplayName().equals("§9§lTimer §f§l[§c§lDEACTIVATED§f§l]")){
+           config.set("Timer",true);
+           try {
+               config.save(file);
+           } catch (IOException exception) {
+               exception.printStackTrace();
+           }
+           openSettings();
+           p.openInventory(settings);
+       }
 
         if(current.getType() == Material.CHEST && current.getItemMeta().getDisplayName().equals("§6§lChallenges")){
             openChallenges();
             p.openInventory(challegnges1);
         }
         if(current.getType() == Material.TNT && current.getItemMeta().getDisplayName().equals("§f§lDeathSwap [§a§lACTIVATED§f§l]")){
+            
             config.set("DeathSwap",false);
             try {
                 config.save(file);
